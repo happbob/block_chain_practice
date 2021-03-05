@@ -12,6 +12,7 @@ type Block struct {
 	Data         []byte
 	PreBlockHash []byte
 	Hash         []byte
+	Nonce        int
 }
 
 // 블록을 구성하는 필드들을 하나로 이은 뒤 이어진 문자열에 대해 해시를 계산하는 과정
@@ -24,8 +25,12 @@ func (b *Block) SetHash() {
 
 // 블록을 생성하는 함수
 func NewBlock(data string, prevBlockHash []byte) *Block {
-	block := &Block{time.Now().Unix(), []byte(data), prevBlockHash, []byte{}}
-	block.SetHash()
+	block := &Block{time.Now().Unix(), []byte(data), prevBlockHash, []byte{}, 0}
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.Run()
+
+	block.Hash = hash[:]
+	block.Nonce = nonce
 	return block
 }
 

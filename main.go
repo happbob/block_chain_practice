@@ -1,6 +1,10 @@
+// main.go
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func main() {
 	var bc = NewBlockChain()
@@ -12,6 +16,8 @@ func main() {
 		fmt.Printf("Prev. hash: %x\n", block.PreBlockHash)
 		fmt.Printf("Data: %s\n", block.Data)
 		fmt.Printf("Hash: %x\n", block.Hash)
+		pow := NewProofOfWork(block)
+		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
 		fmt.Println()
 	}
 }
